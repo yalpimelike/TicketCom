@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: ticket-service
+          uri: http://localhost:1010
+          predicates:
+            - Path=/api/v1/trips/**
+
+        - id: notification-service
+          uri: http://localhost:1011
+          predicates:
+            - Path=/api/v1/notification/**
+
+        - id: user-service
+          uri: http://localhost:1012
+          predicates:
+            - Path=/api/v1/users/**
+
+        - id: auth-service
+          uri: http://localhost:1013
+          predicates:
+            - Path=/api/v1/auth/**
+
+  main:
+    web-application-type: reactive
+
+
+
+server:
+  port:
+    9090
+
+
