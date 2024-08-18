@@ -1,15 +1,15 @@
-package com.melikesivrikaya.ticketservice.model;
+package com.melikesivrikaya.userservice.model;
 
-import com.melikesivrikaya.ticketservice.model.enums.Role;
+import com.melikesivrikaya.userservice.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,4 +23,5 @@ public class User {
     @ElementCollection(targetClass = Role.class)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
 }

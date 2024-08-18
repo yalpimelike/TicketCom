@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class EmailConsumer {
 
-    @RabbitListener(queues = "${rabbitmq.email.queue}")
+    @RabbitListener(queues = "${rabbitmq.notification.queue}")
     public void listenEmail(SendEmailMessage emailMessage) {
         log.info("emailMessage: {}", emailMessage);
     }

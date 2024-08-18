@@ -1,6 +1,5 @@
-package com.melikesivrikaya.ticketservice.dto;
+package com.melikesivrikaya.userservice.dto;
 
-import com.melikesivrikaya.ticketservice.dto.enums.EmailTemplate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

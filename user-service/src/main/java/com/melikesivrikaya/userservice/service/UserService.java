@@ -1,11 +1,11 @@
-package com.melikesivrikaya.ticketservice.service;
+package com.melikesivrikaya.userservice.service;
 
-import com.melikesivrikaya.ticketservice.dto.SendEmailMessage;
-import com.melikesivrikaya.ticketservice.dto.enums.EmailTemplate;
-import com.melikesivrikaya.ticketservice.model.User;
-import com.melikesivrikaya.ticketservice.model.enums.Role;
-import com.melikesivrikaya.ticketservice.producer.RabbitMqProducer;
-import com.melikesivrikaya.ticketservice.repository.UserRepository;
+import com.melikesivrikaya.userservice.dto.EmailTemplate;
+import com.melikesivrikaya.userservice.dto.SendEmailMessage;
+import com.melikesivrikaya.userservice.model.User;
+import com.melikesivrikaya.userservice.model.enums.Role;
+import com.melikesivrikaya.userservice.producer.RabbitMqProducer;
+import com.melikesivrikaya.userservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class UserService {
 
 
     public User create(User user) {
-        rabbitMqProducer.sendEmail(new SendEmailMessage("melike@gmail.com", EmailTemplate.CREATE_USER_TEMPLATE));
+        rabbitMqProducer.sendEmail(new SendEmailMessage("melike@gmail.com", EmailTemplate.CREATED_USER));
         return userRepository.save(user);
     }
 
@@ -53,4 +53,7 @@ public class UserService {
         return user;
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
 }

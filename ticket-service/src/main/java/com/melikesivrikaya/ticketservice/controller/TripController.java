@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/trip")
+@RequestMapping("/api/v1/trips")
 public class TripController {
 
     private final TripService tripService;

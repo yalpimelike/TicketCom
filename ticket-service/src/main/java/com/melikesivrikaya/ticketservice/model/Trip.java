@@ -25,7 +25,7 @@ public class Trip {
     private int price;
 
     // TODO bunu sefer oluşturulurken type na göre setle
-    private int yolvuKapasite;
+    private int yolcuKapasite;
 
     @Enumerated(EnumType.STRING)
     private TripType tripType;
@@ -37,6 +37,7 @@ public class Trip {
         this.endDate = dateParse(endDate);
     }
 
+    // TODO buradan çıkan hatayı yakala
     public LocalDate dateParse(String date) {
         LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         LocalDate localDateNow = LocalDate.now();
