@@ -1,27 +1,37 @@
 package com.melikesivrikaya.gatewayservice.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
 
 @Configuration
+@RequiredArgsConstructor
+@EnableMethodSecurity
+@EnableWebSecurity
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
+    private final JwtRequestFilter jwtRequestFilter;
+
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        // NOT burada izin verdiğim url de sadece get isteğine izin veriyo diğerlerine csrf hatası veriyo
         http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable) //cssrf hatasını çözüyo
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/api/v1/auth/**")
-                        .permitAll() // api/v1 client erişimi için izin ver
+                        .permitAll()
                         .anyExchange()
                         .authenticated()
-                );
-
+                )
+                .addFilterBefore( jwtRequestFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+                .securityContextRepository(NoOpServerSecurityContextRepository.getInstance());
         return http.build();
     }
 }
