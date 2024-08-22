@@ -20,7 +20,7 @@ public class UserService {
 
 
     public User create(User user) {
-        rabbitMqProducer.sendEmail(new SendEmailMessage("melike@gmail.com", EmailTemplate.CREATED_USER));
+        rabbitMqProducer.sendEmail(new SendEmailMessage(user.getEmail(), EmailTemplate.CREATE_USER_TEMPLATE));
         return userRepository.save(user);
     }
 
@@ -53,7 +53,7 @@ public class UserService {
         return user;
     }
 
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
     }
 }
