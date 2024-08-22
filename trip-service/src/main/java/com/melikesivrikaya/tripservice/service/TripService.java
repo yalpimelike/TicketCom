@@ -20,9 +20,11 @@ public class TripService {
 
     public Trip create(Trip trip) {
         if (trip.getTripType().equals(TripType.PLANE)){
-            trip.setOccupant(189);
+            trip.setTravelerCount(189);
+            trip.setAvailableCount(189);
         } else if (trip.getTripType().equals(TripType.BUS)) {
-            trip.setOccupant(45);
+            trip.setTravelerCount(45);
+            trip.setAvailableCount(45);
         }
 
         Trip savedTrip =  tripRepository.save(trip);
