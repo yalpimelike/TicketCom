@@ -1,7 +1,7 @@
-package com.melikesivrikaya.ticketservice.model;
+package com.melikesivrikaya.tripservice.model;
 
 
-import com.melikesivrikaya.ticketservice.model.enums.TripType;
+import com.melikesivrikaya.tripservice.model.enums.TripType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @Entity
+@Setter
 @Table(name = "trips")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,8 +25,7 @@ public class Trip {
     private LocalDate endDate;
     private int price;
 
-    // TODO bunu sefer oluşturulurken type na göre setle
-    private int yolcuKapasite;
+    private int occupant;
 
     @Enumerated(EnumType.STRING)
     private TripType tripType;

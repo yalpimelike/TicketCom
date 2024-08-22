@@ -1,4 +1,4 @@
-package com.melikesivrikaya.ticketservice.model.enums;
+package com.melikesivrikaya.tripservice.model.enums;
 
 public enum TripType {
     PLANE,

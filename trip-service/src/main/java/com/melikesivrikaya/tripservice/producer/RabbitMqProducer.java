@@ -1,6 +1,6 @@
-package com.melikesivrikaya.ticketservice.producer;
+package com.melikesivrikaya.tripservice.producer;
 
-import com.melikesivrikaya.ticketservice.config.RabbitMqConfig;
+import com.melikesivrikaya.tripservice.config.RabbitMqConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;

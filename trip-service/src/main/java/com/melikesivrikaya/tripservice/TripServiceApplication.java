@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class TicketServiceApplication {
+public class TripServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TicketServiceApplication.class, args);
+        SpringApplication.run(TripServiceApplication.class, args);
     }
 
 }

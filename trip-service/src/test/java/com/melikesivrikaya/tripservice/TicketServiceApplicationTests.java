@@ -1,4 +1,4 @@
-package com.melikesivrikaya.ticketservice;
+package com.melikesivrikaya.tripservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

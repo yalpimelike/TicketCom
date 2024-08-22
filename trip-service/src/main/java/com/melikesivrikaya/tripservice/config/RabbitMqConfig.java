@@ -1,4 +1,4 @@
-package com.melikesivrikaya.ticketservice.config;
+package com.melikesivrikaya.tripservice.config;
 
 import lombok.Data;
 import org.springframework.amqp.core.*;
