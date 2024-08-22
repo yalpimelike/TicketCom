@@ -8,8 +8,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="auth-service" />
-        <module name="user-service" />
+        <module name="trip-service" />
+        <module name="payment-service" />
+        <module name="index-service" />
         <module name="gateway-service" />
+        <module name="user-service" />
         <module name="discovery-service" />
         <module name="notification-service" />
         <module name="ticket-service" />
@@ -21,8 +24,11 @@
       <module name="auth-service" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="index-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
+      <module name="payment-service" options="-parameters" />
       <module name="ticket-service" options="-parameters" />
+      <module name="trip-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>

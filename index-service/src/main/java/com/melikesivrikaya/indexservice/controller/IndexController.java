@@ -23,14 +23,7 @@ public class IndexController {
     private final TripDocumentRepository tripDocumentRepository;
 
     @GetMapping
-    public List<Trip> getAll(){
-
-        log.info("Get all trips");
-
-//        Iterable<TripDocument> tripDocuments = tripDocumentRepository.findAll();
-//        return StreamSupport.stream(tripDocuments.spliterator(), false)
-//                .map(TripConverter::toEnttiy)
-//                .collect(Collectors.toList());
-        return null;
+    public Iterable<TripDocument> getAll(){
+        return tripDocumentRepository.findAll();
     }
 }

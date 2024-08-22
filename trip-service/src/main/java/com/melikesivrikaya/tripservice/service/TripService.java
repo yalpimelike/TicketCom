@@ -25,8 +25,9 @@ public class TripService {
             trip.setOccupant(45);
         }
 
-        kafkaProducer.sendTrip(trip);
-        return tripRepository.save(trip);
+        Trip savedTrip =  tripRepository.save(trip);
+        kafkaProducer.sendTrip(savedTrip);
+        return savedTrip;
     }
 
     public List<Trip> getAll() {

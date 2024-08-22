@@ -37,7 +37,7 @@ spring:
         - id: index-service
           uri: http://localhost:1016
           predicates:
-            - Path=/api/v1/indexes/**
+            - Path=/api/v1/index/**
 
   main:
     web-application-type: reactive
