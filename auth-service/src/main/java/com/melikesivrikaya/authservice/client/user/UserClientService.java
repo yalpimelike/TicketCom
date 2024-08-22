@@ -13,7 +13,6 @@ public class UserClientService {
     private final UserClient userClient;
 
     public List<User> getUsers() {
-        System.out.println("UserClient Service e geldi");
         return userClient.getAll();
     }
 
@@ -21,11 +20,11 @@ public class UserClientService {
         return userClient.create(user);
     }
 
-    public boolean existsByEmail(String email) {
-        return userClient.findByEmail(email) != null;
+    public boolean existsByUsername(String username) {
+        return userClient.findByUsername(username) != null;
     }
 
-    public User userByEmail(String email) {
-        return userClient.findByEmail(email);
+    public User userByUsername(String username) {
+        return userClient.findByUsername(username);
     }
 }

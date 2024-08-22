@@ -28,8 +28,10 @@ public class BeanConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/**").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("/**")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
                 );
         return http.build();
     }

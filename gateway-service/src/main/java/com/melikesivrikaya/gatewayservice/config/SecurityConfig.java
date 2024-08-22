@@ -1,5 +1,6 @@
 package com.melikesivrikaya.gatewayservice.config;
 
+import com.melikesivrikaya.gatewayservice.dto.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,10 +26,15 @@ public class SecurityConfig {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/api/v1/auth/**")
+                        .pathMatchers("/api/v1/auth/register","/api/v1/auth/login")
                         .permitAll()
+                        .pathMatchers("/api/v1/trips/**")
+                        .hasRole("ADMIN")
+                        .pathMatchers("/api/v1/tickets/**")
+                        .hasRole("USER")
                         .anyExchange()
-                        .authenticated()
+//                        .denyAll()
+                                .authenticated()
                 )
                 .addFilterBefore( jwtRequestFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance());

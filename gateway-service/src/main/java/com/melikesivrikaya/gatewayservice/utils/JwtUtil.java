@@ -1,10 +1,10 @@
 package com.melikesivrikaya.gatewayservice.utils;
 
-import com.melikesivrikaya.gatewayservice.dto.UserDetailsDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
@@ -15,7 +15,7 @@ public class JwtUtil {
 
     public static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
 
-    public String extractEmail(String token) {
+    public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -41,8 +41,8 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public boolean validateToken(String token, UserDetailsDto userDetails) {
-        final String username = extractEmail(token);
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 

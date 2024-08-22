@@ -1,5 +1,7 @@
 package com.melikesivrikaya.authservice.utils;
 
+import com.melikesivrikaya.authservice.model.User;
+import com.melikesivrikaya.authservice.model.UserDetail;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -17,11 +19,12 @@ public class JwtUtil {
 
     public static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("userId",user.getId());
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 60 * 100))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();

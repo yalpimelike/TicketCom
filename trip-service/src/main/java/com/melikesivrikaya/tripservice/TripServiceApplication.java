@@ -1,4 +1,4 @@
-package com.melikesivrikaya.ticketservice;
+package com.melikesivrikaya.tripservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

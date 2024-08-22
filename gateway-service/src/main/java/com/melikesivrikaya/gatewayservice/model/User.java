@@ -1,7 +1,8 @@
-package com.melikesivrikaya.authservice.model;
+package com.melikesivrikaya.gatewayservice.model;
 
-import com.melikesivrikaya.authservice.model.enums.Role;
+import com.melikesivrikaya.gatewayservice.dto.enums.Role;
 import lombok.*;
+
 import java.util.Set;
 
 @Setter

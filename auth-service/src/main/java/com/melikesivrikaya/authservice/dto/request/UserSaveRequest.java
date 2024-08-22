@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 public class UserSaveRequest {
 
-    private String email;
-    private String password;
+    private String username;
+    private String password,phone,email;
 
 }

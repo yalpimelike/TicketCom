@@ -4,6 +4,7 @@ import com.melikesivrikaya.authservice.client.user.UserClientService;
 import com.melikesivrikaya.authservice.dto.request.UserLoginRequest;
 import com.melikesivrikaya.authservice.dto.request.UserSaveRequest;
 import com.melikesivrikaya.authservice.model.User;
+import com.melikesivrikaya.authservice.model.UserDetail;
 import com.melikesivrikaya.authservice.model.enums.Role;
 import com.melikesivrikaya.authservice.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,16 @@ public class AuthService {
 
     public User register(UserSaveRequest request) {
 
-        boolean isVariableUser = userClientService.existsByEmail(request.getEmail());
+        boolean isVariableUser = userClientService.existsByUsername(request.getUsername());
 
        if (isVariableUser) {
-           throw new RuntimeException("Bu emaile ait bir kullanıcı zaten var.");
+           throw new RuntimeException("Bu username e ait bir kullanıcı zaten var.");
        }
 
         User user = User.builder()
+                .username(request.getUsername())
                 .email(request.getEmail())
+                .phone(request.getPhone())
                 .password(bCryptPasswordEncoder.encode(request.getPassword()))
                 .roles(Set.of(Role.USER))
                 .build();
@@ -44,9 +47,9 @@ public class AuthService {
 
     public String login(UserLoginRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-        User user = userClientService.userByEmail(request.getEmail());
+        User user = userClientService.userByUsername(request.getUsername());
         return jwtUtil.generateToken(user);
     }
 

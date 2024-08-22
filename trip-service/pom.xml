@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.melikesivrikaya</groupId>
-    <artifactId>ticket-service</artifactId>
+    <artifactId>trip-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ticket-service</name>
     <description>ticket-service</description>

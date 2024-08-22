@@ -1,7 +1,7 @@
 package com.melikesivrikaya.gatewayservice.config;
 
-import com.melikesivrikaya.gatewayservice.client.AuthClientService;
-import com.melikesivrikaya.gatewayservice.dto.UserDetailsDto;
+import com.melikesivrikaya.gatewayservice.client.user.UserClientService;
+import com.melikesivrikaya.gatewayservice.dto.UserDetail;
 import com.melikesivrikaya.gatewayservice.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +9,7 @@ import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -19,9 +20,11 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class JwtRequestFilter implements WebFilter {
 
-    private final AuthClientService authClientService;
+    private final UserClientService userClientService;
 
     private final JwtUtil jwtUtil;
+
+    // TODO role ekleme işlemleri yap
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -30,18 +33,18 @@ public class JwtRequestFilter implements WebFilter {
         }
         final String authorizationHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
         final String jwtToken;
-        final String email;
+        final String username;
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return chain.filter(exchange);
         }
         jwtToken = authorizationHeader.substring(7);
-        email = jwtUtil.extractEmail(jwtToken);
+        username = jwtUtil.extractUsername(jwtToken);
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetailsDto userDetailsDto = authClientService.loadUserByUsername(email);
-            if (jwtUtil.validateToken(jwtToken, userDetailsDto)) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetail userDetail = new UserDetail(userClientService.userByUsername(username));
+            if (jwtUtil.validateToken(jwtToken, userDetail)) {
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetailsDto, null, userDetailsDto.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
                 SecurityContext context = new SecurityContextImpl(authentication);
                 return chain.filter(exchange)
                         .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(context)));
