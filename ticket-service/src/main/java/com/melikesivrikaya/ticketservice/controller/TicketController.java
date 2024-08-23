@@ -12,9 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TicketController {
 
-
-
-
     private final TicketService ticketService;
 
     @GetMapping
@@ -25,6 +22,16 @@ public class TicketController {
     @PostMapping
     public Ticket create(@RequestBody Ticket ticket) {
         return ticketService.create(ticket);
+    }
+
+    @PostMapping("/list")
+    public List<Ticket> createTicketList(@RequestBody List<Ticket> ticketList) {
+        return ticketService.createTicketList(ticketList);
+    }
+
+    @GetMapping("{ticketSize}/{tripId}")
+    public void createTickets(@PathVariable int ticketSize, @PathVariable Long tripId) {
+        ticketService.createTickets(ticketSize,tripId);
     }
 
     @DeleteMapping("/{ticketId}")
