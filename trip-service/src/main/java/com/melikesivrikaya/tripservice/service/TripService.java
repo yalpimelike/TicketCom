@@ -1,5 +1,6 @@
 package com.melikesivrikaya.tripservice.service;
 
+import com.melikesivrikaya.tripservice.client.TicketClientService;
 import com.melikesivrikaya.tripservice.model.Trip;
 import com.melikesivrikaya.tripservice.model.enums.TripType;
 import com.melikesivrikaya.tripservice.producer.KafkaProducer;
@@ -17,17 +18,16 @@ public class TripService {
 
     private final TripRepository tripRepository;
     private final KafkaProducer kafkaProducer;
+    private final TicketClientService ticketClientService;
 
     public Trip create(Trip trip) {
         if (trip.getTripType().equals(TripType.PLANE)){
             trip.setTravelerCount(189);
-            trip.setAvailableCount(189);
         } else if (trip.getTripType().equals(TripType.BUS)) {
             trip.setTravelerCount(45);
-            trip.setAvailableCount(45);
         }
-
         Trip savedTrip =  tripRepository.save(trip);
+        ticketClientService.createTickets(trip.getTravelerCount(),trip.getId());
         kafkaProducer.sendTrip(savedTrip);
         return savedTrip;
     }
@@ -38,5 +38,9 @@ public class TripService {
 
     public void delete(Long tripId) {
         tripRepository.deleteById(tripId);
+    }
+
+    public Trip getTripById(Long tripId) {
+        return tripRepository.findById(tripId).orElse(null);
     }
 }

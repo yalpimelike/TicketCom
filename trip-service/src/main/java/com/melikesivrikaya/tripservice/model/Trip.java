@@ -25,10 +25,8 @@ public class Trip {
     private LocalDate endDate;
     private int price;
 
-    // Toplam Yolcu kapasitesi
     private int travelerCount;
 
-    private int availableCount;
 
     @Enumerated(EnumType.STRING)
     private TripType tripType;
