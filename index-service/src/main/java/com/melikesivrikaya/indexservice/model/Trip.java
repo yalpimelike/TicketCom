@@ -19,6 +19,7 @@ public class Trip {
     private LocalDate startDate;
     private LocalDate endDate;
     private int price;
-    private int occupant;
+    private int travelerCount;
+    private int availableCount;
     private TripType tripType;
 }

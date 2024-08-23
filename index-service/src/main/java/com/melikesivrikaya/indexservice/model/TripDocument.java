@@ -20,6 +20,7 @@ public class TripDocument {
     private String startDate;
     private String endDate;
     private int price;
-    private int occupant;
+    private int travelerCount;
+    private int availableCount;
     private String tripType;
 }

@@ -15,7 +15,8 @@ public class TripConverter {
                 .endDate(String.valueOf(trip.getEndDate()))
                 .startCity(String.valueOf(trip.getStartCity()))
                 .endCity(String.valueOf(trip.getEndCity()))
-                .occupant(trip.getOccupant())
+                .travelerCount(trip.getTravelerCount())
+                .availableCount(trip.getAvailableCount())
                 .build();
     }
 
@@ -27,7 +28,8 @@ public class TripConverter {
                 .price(tripDocument.getPrice())
                 .endCity(tripDocument.getEndCity())
                 .startCity(tripDocument.getStartCity())
-                .occupant(tripDocument.getOccupant())
+                .availableCount(tripDocument.getAvailableCount())
+                .travelerCount(tripDocument.getTravelerCount())
                 .build();
     }
 }
