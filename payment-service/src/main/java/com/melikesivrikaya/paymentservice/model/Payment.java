@@ -3,11 +3,13 @@ package com.melikesivrikaya.paymentservice.model;
 import com.melikesivrikaya.paymentservice.model.enums.Rate;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Builder
 @Table(name = "payments")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +21,7 @@ public class Payment {
 
     private Rate rate;
 
-    private Long price;
+    private int totalPrice;
 
-    private Long orderId;
+    private Long tripId,userId;
 }

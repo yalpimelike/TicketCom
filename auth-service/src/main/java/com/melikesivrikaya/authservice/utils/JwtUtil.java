@@ -1,12 +1,10 @@
 package com.melikesivrikaya.authservice.utils;
 
 import com.melikesivrikaya.authservice.model.User;
-import com.melikesivrikaya.authservice.model.UserDetail;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -22,6 +20,7 @@ public class JwtUtil {
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId",user.getId());
+        claims.put("userType",user.getUserType());
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(user.getUsername())

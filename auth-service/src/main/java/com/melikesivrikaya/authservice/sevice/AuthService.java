@@ -37,6 +37,7 @@ public class AuthService {
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
+                .userType(request.getUserType())
                 .phone(request.getPhone())
                 .password(bCryptPasswordEncoder.encode(request.getPassword()))
                 .roles(Set.of(Role.USER))

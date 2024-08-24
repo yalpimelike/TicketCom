@@ -23,10 +23,4 @@ public class AuthController {
     public String login(@RequestBody UserLoginRequest request) {
         return authService.login(request);
     }
-
-    @GetMapping
-    public void hi() {
-        System.out.println("kod gelie222");
-    }
-
 }
