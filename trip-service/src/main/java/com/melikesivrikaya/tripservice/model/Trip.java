@@ -1,6 +1,5 @@
 package com.melikesivrikaya.tripservice.model;
 
-
 import com.melikesivrikaya.tripservice.model.enums.TripType;
 import jakarta.persistence.*;
 import lombok.*;

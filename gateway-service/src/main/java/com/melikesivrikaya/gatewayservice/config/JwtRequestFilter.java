@@ -37,16 +37,19 @@ public class JwtRequestFilter implements WebFilter {
         final String authorizationHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
         final String jwtToken;
         final String username;
-        final UserType userType;
+        final String userType;
+        final Long userId;
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return chain.filter(exchange);
         }
         jwtToken = authorizationHeader.substring(7);
         username = jwtUtil.extractUsername(jwtToken);
         userType = jwtUtil.extractUserType(jwtToken);
+        userId = jwtUtil.extractUserId(jwtToken);
 
         ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
                 .header("userType", String.valueOf(userType))
+                .header("userId", String.valueOf(userId))
                 .build();
 
         exchange = exchange.mutate().request(modifiedRequest).build();

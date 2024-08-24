@@ -19,10 +19,12 @@ public class JwtUtil {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-    public UserType extractUserType(String token) {
-        return extractAllClaims(token).get("userType",UserType.class);
+    public String extractUserType(String token) {
+        return extractAllClaims(token).get("userType",String.class);
     }
-
+    public Long extractUserId(String token) {
+        return extractAllClaims(token).get("userId",Long.class);
+    }
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
@@ -54,4 +56,6 @@ public class JwtUtil {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.melikesivrikaya.ticketservice.service;
 
+import com.melikesivrikaya.ticketservice.dto.CreateTicketListRequest;
 import com.melikesivrikaya.ticketservice.model.Ticket;
 import com.melikesivrikaya.ticketservice.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,10 +40,10 @@ public class TicketService {
         return ticketRepository.saveAll(ticketList);
     }
 
-    public void createTickets(int ticketSize,Long tripId) {
+    public void createTickets(CreateTicketListRequest request) {
         List<Ticket> ticketList = new ArrayList<>();
-        for (int i = 1; i <= ticketSize; i++) {
-            ticketList.add(new Ticket(tripId,i,false,false));
+        for (int i = 1; i <= request.getTicketSize(); i++) {
+            ticketList.add(new Ticket(request.getTripId() , i,false,false, request.getPrice()));
         }
         ticketRepository.saveAll(ticketList);
     }

@@ -1,5 +1,6 @@
 package com.melikesivrikaya.ticketservice.controller;
 
+import com.melikesivrikaya.ticketservice.dto.CreateTicketListRequest;
 import com.melikesivrikaya.ticketservice.model.Ticket;
 import com.melikesivrikaya.ticketservice.service.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,9 @@ public class TicketController {
         return ticketService.createTicketList(ticketList);
     }
 
-    @GetMapping("{ticketSize}/{tripId}")
-    public void createTickets(@PathVariable int ticketSize, @PathVariable Long tripId) {
-        ticketService.createTickets(ticketSize,tripId);
+    @PostMapping("/createList")
+    public void createTickets(@RequestBody CreateTicketListRequest request) {
+        ticketService.createTickets(request);
     }
 
     @DeleteMapping("/{ticketId}")

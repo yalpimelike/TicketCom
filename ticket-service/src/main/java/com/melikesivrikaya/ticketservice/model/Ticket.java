@@ -1,13 +1,11 @@
 package com.melikesivrikaya.ticketservice.model;
 
-
 import com.melikesivrikaya.ticketservice.dto.enums.Gender;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tickets")
 @AllArgsConstructor
@@ -23,8 +21,9 @@ public class Ticket {
     private boolean reserved;
     private Boolean isPayment;
     private Gender travellerGender;
+    private int price;
 
-    public Ticket(Long tripId, int number, boolean reserved, Boolean isPayment) {
+    public Ticket(Long tripId, int number, boolean reserved, Boolean isPayment,int price) {
         this.tripId = tripId;
         this.number = number;
         this.reserved = reserved;

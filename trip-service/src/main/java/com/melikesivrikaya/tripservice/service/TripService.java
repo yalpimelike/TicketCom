@@ -1,6 +1,7 @@
 package com.melikesivrikaya.tripservice.service;
 
 import com.melikesivrikaya.tripservice.client.TicketClientService;
+import com.melikesivrikaya.tripservice.dto.CreateTicketListRequest;
 import com.melikesivrikaya.tripservice.model.Trip;
 import com.melikesivrikaya.tripservice.model.enums.TripType;
 import com.melikesivrikaya.tripservice.producer.KafkaProducer;
@@ -27,7 +28,7 @@ public class TripService {
             trip.setTravelerCount(45);
         }
         Trip savedTrip =  tripRepository.save(trip);
-        ticketClientService.createTickets(trip.getTravelerCount(),trip.getId());
+        ticketClientService.createTickets(new CreateTicketListRequest(trip.getId(),trip.getTravelerCount(),trip.getPrice()));
         kafkaProducer.sendTrip(savedTrip);
         return savedTrip;
     }

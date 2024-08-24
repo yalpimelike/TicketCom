@@ -1,6 +1,7 @@
 package com.melikesivrikaya.userservice.model;
 
 import com.melikesivrikaya.userservice.model.enums.Role;
+import com.melikesivrikaya.userservice.model.enums.UserType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username,password,phone,email;
+
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
     @ElementCollection(targetClass = Role.class)
     @Enumerated(EnumType.STRING)
