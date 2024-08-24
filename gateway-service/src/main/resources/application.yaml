@@ -44,6 +44,11 @@ spring:
           predicates:
             - Path=/api/v1/search/**
 
+        - id: order-service
+          uri: http://localhost:1018
+          predicates:
+            - Path=/api/v1/orders/**
+
   main:
     web-application-type: reactive
     allow-bean-definition-overriding: true

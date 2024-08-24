@@ -14,6 +14,7 @@
         <module name="gateway-service" />
         <module name="search-service" />
         <module name="user-service" />
+        <module name="order-service" />
         <module name="discovery-service" />
         <module name="notification-service" />
         <module name="ticket-service" />
@@ -27,6 +28,7 @@
       <module name="gateway-service" options="-parameters" />
       <module name="index-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
+      <module name="order-service" options="-parameters" />
       <module name="payment-service" options="-parameters" />
       <module name="search-service" options="-parameters" />
       <module name="ticket-service" options="-parameters" />

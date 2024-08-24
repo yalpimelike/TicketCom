@@ -1,6 +1,6 @@
-package com.melikesivrikaya.notificationservice.consumer.dto;
+package com.melikesivrikaya.notificationservice.consumer.rabbitmq.dto;
 
-import com.melikesivrikaya.notificationservice.consumer.dto.enums.EmailTemplate;
+import com.melikesivrikaya.notificationservice.consumer.rabbitmq.dto.enums.EmailTemplate;
 import lombok.*;
 
 @Getter

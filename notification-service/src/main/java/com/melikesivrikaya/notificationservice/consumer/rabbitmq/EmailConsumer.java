@@ -1,6 +1,6 @@
-package com.melikesivrikaya.notificationservice.consumer;
+package com.melikesivrikaya.notificationservice.consumer.rabbitmq;
 
-import com.melikesivrikaya.notificationservice.consumer.dto.SendEmailMessage;
+import com.melikesivrikaya.notificationservice.consumer.rabbitmq.dto.SendEmailMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

@@ -5,11 +5,11 @@ import com.melikesivrikaya.ticketservice.client.trip.TripClientService;
 import com.melikesivrikaya.ticketservice.dto.Order;
 import com.melikesivrikaya.ticketservice.dto.Payment;
 import com.melikesivrikaya.ticketservice.dto.PaymentRequest;
-import com.melikesivrikaya.ticketservice.dto.Trip;
 import com.melikesivrikaya.ticketservice.dto.enums.Rate;
 import com.melikesivrikaya.ticketservice.dto.enums.TicketForOrder;
 import com.melikesivrikaya.ticketservice.dto.enums.UserType;
 import com.melikesivrikaya.ticketservice.model.Ticket;
+import com.melikesivrikaya.ticketservice.producer.KafkaProducer;
 import com.melikesivrikaya.ticketservice.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class TicketCustomerService {
     private final PaymentClientService paymentClientService;
     private int maleTravellerCount = 0;
     private int totalPrice = 0 ;
-
+    private final KafkaProducer kafkaProducer;
 
     public List<Ticket> approvalBasket(){
 
@@ -94,6 +94,7 @@ public class TicketCustomerService {
 
     public void ticketsPayment(Long userId) {
         // TODO gelen rate i requestten al
+        List<Ticket> paymentTicket = new ArrayList<>();
         Payment payment = paymentClientService.paymentTickets(new PaymentRequest(userId, Rate.CREDIT_CART,totalPrice)).orElse(null);
         if (payment != null){
             //order oluştur ve kafka ile notification a gönder
@@ -101,7 +102,9 @@ public class TicketCustomerService {
             List<TicketForOrder> ticketForOrderList = new ArrayList<>();
             ticketList.forEach((k, v) -> {
                 v.forEach(ticket -> {
+                    ticket.setIsPayment(true);
                     ticketForOrderList.add(new TicketForOrder(ticket,tripClientService.getTripById(k)));
+                    paymentTicket.add(ticket);
                 });
             });
             order.setTickets(ticketForOrderList);
@@ -110,7 +113,11 @@ public class TicketCustomerService {
             order.setTotalPrice(totalPrice);
 
             // TODO kafka ile gönder
+            kafkaProducer.sendOrder(order);
+            kafkaProducer.sendEmail(order);
+            // herşey tamamsa ticket databse inde ticketlar ödendi olarak gözüksün YAPILDI
+            // birde ticketler filtrelenerek gelsin buna bir çözüm bul redis olabilir elasticsearch ve solr
         }
-
+        ticketRepository.saveAll(paymentTicket);
     }
 }
