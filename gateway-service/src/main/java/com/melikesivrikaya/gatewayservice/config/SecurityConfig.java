@@ -33,7 +33,7 @@ public class SecurityConfig {
                         .pathMatchers("/api/v1/tickets/**")
                         .hasRole("USER")
                         .anyExchange()
-//                        .denyAll()
+//                       .denyAll()
                                 .authenticated()
                 )
                 .addFilterBefore( jwtRequestFilter, SecurityWebFiltersOrder.AUTHENTICATION)

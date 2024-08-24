@@ -2,8 +2,11 @@ package com.melikesivrikaya.gatewayservice.config;
 
 import com.melikesivrikaya.gatewayservice.client.user.UserClientService;
 import com.melikesivrikaya.gatewayservice.dto.UserDetail;
+import com.melikesivrikaya.gatewayservice.model.User;
+import com.melikesivrikaya.gatewayservice.model.enums.UserType;
 import com.melikesivrikaya.gatewayservice.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -34,11 +37,19 @@ public class JwtRequestFilter implements WebFilter {
         final String authorizationHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
         final String jwtToken;
         final String username;
+        final UserType userType;
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return chain.filter(exchange);
         }
         jwtToken = authorizationHeader.substring(7);
         username = jwtUtil.extractUsername(jwtToken);
+        userType = jwtUtil.extractUserType(jwtToken);
+
+        ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
+                .header("userType", String.valueOf(userType))
+                .build();
+
+        exchange = exchange.mutate().request(modifiedRequest).build();
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetail userDetail = new UserDetail(userClientService.userByUsername(username));

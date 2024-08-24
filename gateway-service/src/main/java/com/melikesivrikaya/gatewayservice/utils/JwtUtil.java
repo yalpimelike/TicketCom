@@ -1,5 +1,6 @@
 package com.melikesivrikaya.gatewayservice.utils;
 
+import com.melikesivrikaya.gatewayservice.model.enums.UserType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -17,6 +18,9 @@ public class JwtUtil {
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+    public UserType extractUserType(String token) {
+        return extractAllClaims(token).get("userType",UserType.class);
     }
 
     public Date extractExpiration(String token) {
