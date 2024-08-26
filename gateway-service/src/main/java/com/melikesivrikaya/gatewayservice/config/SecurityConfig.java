@@ -28,14 +28,14 @@ public class SecurityConfig {
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/api/v1/auth/register","/api/v1/auth/login")
                         .permitAll()
-                        .pathMatchers("/api/v1/trips/**")
+                        .pathMatchers("/api/v1/trips/customer/**")
                         .hasRole("ADMIN")
                         .pathMatchers("/api/v1/tickets/customer/**")
                         .hasRole("USER")
                         .pathMatchers("/api/v1/users/customer/**")
                         .hasRole("USER")
                         .anyExchange()
-//                       .denyAll()
+//                       .denyAll() // TOSO değiştir bunu
                                 .authenticated()
                 )
                 .addFilterBefore( jwtRequestFilter, SecurityWebFiltersOrder.AUTHENTICATION)

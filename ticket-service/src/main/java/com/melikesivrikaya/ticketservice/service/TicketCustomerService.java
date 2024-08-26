@@ -57,6 +57,7 @@ public class TicketCustomerService {
             ticket.setReserved(true);
         });
         ticketService.createTicketList(basket);
+        ticketRepository.saveAll(basket);
         validateBasket(userType,userId);
         return basket;
     }

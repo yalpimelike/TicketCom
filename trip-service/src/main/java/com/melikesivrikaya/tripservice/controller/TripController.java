@@ -18,23 +18,23 @@ public class TripController {
     private final TripService tripService;
 
     @PostMapping
-    public TripResponse create(@RequestBody Trip trip) {
-        return TripConverter.toResponse(tripService.create(trip));
+    public Trip create(@RequestBody Trip trip) {
+        return tripService.create(trip);
     }
 
     @GetMapping
-    public List<TripResponse> getAll() {
-        return tripService.getAll().stream().map(TripConverter::toResponse).toList();
+    public List<Trip> getAll() {
+        return tripService.getAll();
     }
 
     @GetMapping("{tripId}")
-    public TripResponse getTripById(@PathVariable Long tripId) {
-        return TripConverter.toResponse(tripService.getTripById(tripId));
+    public Trip getTripById(@PathVariable Long tripId) {
+        return tripService.getTripById(tripId);
     }
 
     @GetMapping("/{tripId}/tickets")
-    public TripResponse getAllBuyTickets(@PathVariable Long tripId) {
-        return TripConverter.toResponse(tripService.getAllBuyTickets(tripId));
+    public Trip getAllBuyTickets(@PathVariable Long tripId) {
+        return tripService.getAllBuyTickets(tripId);
     }
 
 

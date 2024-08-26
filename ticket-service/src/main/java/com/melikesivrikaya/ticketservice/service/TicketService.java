@@ -4,6 +4,7 @@ import com.melikesivrikaya.ticketservice.dto.CreateTicketListRequest;
 import com.melikesivrikaya.ticketservice.model.Ticket;
 import com.melikesivrikaya.ticketservice.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class TicketService {
     public List<Ticket> findAll() {
         return ticketRepository.findAll();
     }
+
+
     public Ticket create(Ticket ticket) {
         return ticketRepository.save(ticket);
     }

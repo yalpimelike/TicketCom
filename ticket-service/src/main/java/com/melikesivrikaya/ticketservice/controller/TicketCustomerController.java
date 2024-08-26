@@ -5,6 +5,7 @@ import com.melikesivrikaya.ticketservice.dto.TicketResponse;
 import com.melikesivrikaya.ticketservice.dto.enums.Rate;
 import com.melikesivrikaya.ticketservice.service.TicketCustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +22,13 @@ public class TicketCustomerController {
         return TicketConverter.toResponse(ticketCustomerService.addBasket(ticketId));
     }
 
+    @CacheEvict(cacheNames = "tickets", allEntries = true)
     @GetMapping("/approval")
     public List<TicketResponse> approvalBasket(@RequestHeader("userType") String userType,@RequestHeader("userId") String userId ) {
         return ticketCustomerService.approvalBasket(userType,userId).stream().map(TicketConverter::toResponse).toList();
     }
 
+    @CacheEvict(cacheNames = "tickets", allEntries = true)
     @GetMapping("/rate/{rate}")
     public void ticketsPayment(@RequestHeader("userId") String userId, @PathVariable Rate rate){
         ticketCustomerService.ticketsPayment(Long.valueOf(userId),rate);

@@ -4,13 +4,15 @@ import com.melikesivrikaya.ticketservice.dto.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "tickets")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ticket {
+public class Ticket implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
