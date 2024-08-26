@@ -21,4 +21,8 @@ public final class KafkaProducer {
     public void sendEmail(Order order) {
         kafkaTemplate.send(KafkaTopicConstants.SEND_EMAIL_TOPIC, order);
     }
+
+    public void senSms(Order order) {
+        kafkaTemplate.send(KafkaTopicConstants.SEND_SMS_TOPIC, order);
+    }
 }

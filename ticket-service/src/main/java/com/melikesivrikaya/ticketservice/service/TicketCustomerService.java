@@ -30,27 +30,6 @@ public class TicketCustomerService {
     private int totalPrice = 0 ;
     private final KafkaProducer kafkaProducer;
 
-    public List<Ticket> approvalBasket(){
-
-        // Sepetteki biletleri teyit ediyor tekrar
-        // Validate için ayrı bir liste ekliyor
-        // Ticket ları reserve ediyor
-        // ticketList e ekliyor
-        basket.forEach(ticket -> {
-            Ticket currentTicket = ticketRepository.findById(ticket.getId()).orElse(null);
-            if (currentTicket == null){
-                throw new RuntimeException("Bilet artık bulunamamaktadır.");
-            } else if (ticket.isReserved()) {
-                throw new RuntimeException("Ticket is reserved");
-            }
-            // Mevcut tripId için listeyi al, yoksa yeni bir liste oluştur
-            ticketList.computeIfAbsent(ticket.getTripId(), k -> new ArrayList<>()).add(currentTicket);
-            ticket.setReserved(true);
-        });
-        ticketService.createTicketList(basket);
-        return basket;
-    }
-
     // Eğer bilet ödeme aşamasında değilse sepete ekliyor
     public Ticket addBasket(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
@@ -63,15 +42,39 @@ public class TicketCustomerService {
         return ticket;
     }
 
+
+    // Ticket lar reserve edilip tripId ye göre listeleniyor
+    public List<Ticket> approvalBasket(String userType,String userId){
+
+        basket.forEach(ticket -> {
+            Ticket currentTicket = ticketRepository.findById(ticket.getId()).orElse(null);
+            if (currentTicket == null){
+                throw new RuntimeException("Bilet artık bulunamamaktadır.");
+            } else if (ticket.isReserved()) {
+                throw new RuntimeException("Ticket is reserved");
+            }
+            ticketList.computeIfAbsent(ticket.getTripId(), k -> new ArrayList<>()).add(currentTicket);
+            ticket.setReserved(true);
+        });
+        ticketService.createTicketList(basket);
+        validateBasket(userType,userId);
+        return basket;
+    }
+
+
+    // Biletler için logic kontroller yapılıyor
     public void validateBasket(String userType,String userId){
 
         ticketList.forEach((k, v) -> {
-           // Kullsnıcının bu sefer için daha önce almış olduğu bilet sayısı
+
+           // Kullanıcının bu sefer için daha önce almış olduğu bilet sayısı
            List<Ticket> ticketsByUser =  ticketRepository.findByUserIdAndTripId(Long.valueOf(userId),k).orElse(null);
+
            if (ticketsByUser != null){
                int ticketCountByUser = ticketsByUser.size();
                int totalTicketCountByUser = ticketCountByUser + v.size();
                int maxTickets = 0 ;
+
                if (userType.equals(String.valueOf(UserType.CORPORATE))){
                    maxTickets = 40;
                } else if (userType.equals(String.valueOf(UserType.INDIVIDUAL))) {
@@ -92,12 +95,12 @@ public class TicketCustomerService {
         }
     }
 
-    public void ticketsPayment(Long userId) {
-        // TODO gelen rate i requestten al
+    public void ticketsPayment(Long userId,Rate rate) {
+
         List<Ticket> paymentTicket = new ArrayList<>();
-        Payment payment = paymentClientService.paymentTickets(new PaymentRequest(userId, Rate.CREDIT_CART,totalPrice)).orElse(null);
+        Payment payment = paymentClientService.paymentTickets(new PaymentRequest(userId, rate,totalPrice)).orElse(null);
         if (payment != null){
-            //order oluştur ve kafka ile notification a gönder
+
             Order order = new Order();
             List<TicketForOrder> ticketForOrderList = new ArrayList<>();
             ticketList.forEach((k, v) -> {
@@ -107,17 +110,25 @@ public class TicketCustomerService {
                     paymentTicket.add(ticket);
                 });
             });
+
             order.setTickets(ticketForOrderList);
-            order.setRate(Rate.CREDIT_CART);
+            order.setRate(rate);
             order.setUserId(userId);
             order.setTotalPrice(totalPrice);
 
-            // TODO kafka ile gönder
             kafkaProducer.sendOrder(order);
             kafkaProducer.sendEmail(order);
+            kafkaProducer.senSms(order);
             // herşey tamamsa ticket databse inde ticketlar ödendi olarak gözüksün YAPILDI
             // birde ticketler filtrelenerek gelsin buna bir çözüm bul redis olabilir elasticsearch ve solr
         }
         ticketRepository.saveAll(paymentTicket);
+    }
+
+    public void removeBasket(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
+        if (ticket != null){
+            basket.remove(ticket);
+        }
     }
 }

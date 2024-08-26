@@ -1,5 +1,7 @@
 package com.melikesivrikaya.authservice.controller;
 
+import com.melikesivrikaya.authservice.converter.UserConverter;
+import com.melikesivrikaya.authservice.dto.UserResponse;
 import com.melikesivrikaya.authservice.dto.request.UserLoginRequest;
 import com.melikesivrikaya.authservice.dto.request.UserSaveRequest;
 import com.melikesivrikaya.authservice.model.User;
@@ -15,8 +17,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public User register(@RequestBody UserSaveRequest request) {
-        return authService.register(request);
+    public UserResponse register(@RequestBody UserSaveRequest request) {
+        return UserConverter.toResponse(authService.register(request));
     }
 
     @PostMapping("/login")

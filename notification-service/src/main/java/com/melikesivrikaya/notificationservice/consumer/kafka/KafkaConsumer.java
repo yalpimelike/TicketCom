@@ -12,8 +12,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaConsumer {
     @KafkaListener(topics = KafkaTopicConstants.SEND_EMAIL_TOPIC, groupId = "${kafka.group-id}")
-    public void listen(Order order) {
+    public void listenEmail(Order order) {
         log.info("Received Messasge: {}", order.toString());
     }
-
+    @KafkaListener(topics = KafkaTopicConstants.SEND_SMS_TOPIC, groupId = "${kafka.group-id}")
+    public void listenSms(Order order) {
+        log.info("Received Messasge: {}", order.toString());
+    }
 }

@@ -44,4 +44,8 @@ public class TripService {
     public Trip getTripById(Long tripId) {
         return tripRepository.findById(tripId).orElse(null);
     }
+
+    public Trip getAllBuyTickets(Long tripId) {
+        return null;
+    }
 }
