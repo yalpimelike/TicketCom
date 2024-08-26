@@ -11,5 +11,6 @@ public class ExceptionMessages {
     public static final String TICKET_ADDED_BASKET = "Ticket added basket.";
     public static final String MAX_TICKET_EXCEED  = "You have exceeded the maximum number of tickets for the same journey.";
     public static final String MAX_MALE_TRAVELLER = "A maximum of 2 male passengers can be taken in one order.";
+    public static final String NO_SAVE = "Ticket or tickets could not be saved.";
 
 }

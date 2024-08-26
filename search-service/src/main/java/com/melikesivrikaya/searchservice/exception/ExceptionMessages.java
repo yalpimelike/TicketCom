@@ -1,4 +1,4 @@
-package com.melikesivrikaya.userservice.exception;
+package com.melikesivrikaya.searchservice.exception;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExceptionMessages {
 
-    public static final String USER_NOT_FOUNT = "User not found.";
+    public static final String SEARCH_ERROR = "An error occurred during the search..";
 }

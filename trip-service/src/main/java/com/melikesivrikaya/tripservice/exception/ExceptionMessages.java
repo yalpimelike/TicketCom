@@ -7,4 +7,5 @@ import lombok.NoArgsConstructor;
 public class ExceptionMessages {
 
     public static final String INVALID_DATE = "Invalid date.";
+    public static final String TRIP_NOT_FOUND = "Trip not found.";
 }

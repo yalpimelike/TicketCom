@@ -1,4 +1,4 @@
-package com.melikesivrikaya.authservice.exception;
+package com.melikesivrikaya.gatewayservice.exception;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

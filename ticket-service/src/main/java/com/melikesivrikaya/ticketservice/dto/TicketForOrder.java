@@ -1,6 +1,6 @@
-package com.melikesivrikaya.ticketservice.dto.enums;
+package com.melikesivrikaya.ticketservice.dto;
 
-import com.melikesivrikaya.ticketservice.dto.Trip;
+import com.melikesivrikaya.ticketservice.dto.enums.Gender;
 import com.melikesivrikaya.ticketservice.model.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

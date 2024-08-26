@@ -7,13 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
 
 @FeignClient(value = "user-service", url = "localhost:1012/api/v1/users/")
 public interface UserClient {
-
-    @GetMapping
-    List<User> getAll();
 
     @PostMapping
     User create(@RequestBody User user);

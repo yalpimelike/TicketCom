@@ -2,9 +2,10 @@ package com.melikesivrikaya.gatewayservice.config;
 
 import com.melikesivrikaya.gatewayservice.client.user.UserClientService;
 import com.melikesivrikaya.gatewayservice.dto.UserDetail;
+import com.melikesivrikaya.gatewayservice.exception.ExceptionMessages;
 import com.melikesivrikaya.gatewayservice.model.User;
-import com.melikesivrikaya.gatewayservice.model.enums.UserType;
 import com.melikesivrikaya.gatewayservice.utils.JwtUtil;
+import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,14 +56,26 @@ public class JwtRequestFilter implements WebFilter {
         exchange = exchange.mutate().request(modifiedRequest).build();
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetail userDetail = new UserDetail(userClientService.userByUsername(username));
-            if (jwtUtil.validateToken(jwtToken, userDetail)) {
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
-                SecurityContext context = new SecurityContextImpl(authentication);
-                return chain.filter(exchange)
-                        .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(context)));
+            User user = userClientService.userByUsername(username);
+            if (user != null){
+                UserDetail userDetail = new UserDetail();
+                if (jwtUtil.validateToken(jwtToken, userDetail)) {
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+                    SecurityContext context = new SecurityContextImpl(authentication);
+                    return chain.filter(exchange)
+                            .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(context)));
+                }
+            } else {
+                try {
+                    throw new AuthException(ExceptionMessages.USER_NOT_FOUNT);
+                } catch (AuthException e) {
+                    throw new RuntimeException(e);
+                }
             }
+
+
+
         }
         return chain.filter(exchange);
     }

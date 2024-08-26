@@ -2,12 +2,9 @@ package com.melikesivrikaya.ticketservice.service;
 
 import com.melikesivrikaya.ticketservice.client.payment.PaymentClientService;
 import com.melikesivrikaya.ticketservice.client.trip.TripClientService;
-import com.melikesivrikaya.ticketservice.dto.Order;
-import com.melikesivrikaya.ticketservice.dto.Payment;
-import com.melikesivrikaya.ticketservice.dto.PaymentRequest;
+import com.melikesivrikaya.ticketservice.dto.*;
 import com.melikesivrikaya.ticketservice.dto.enums.Gender;
 import com.melikesivrikaya.ticketservice.dto.enums.Rate;
-import com.melikesivrikaya.ticketservice.dto.enums.TicketForOrder;
 import com.melikesivrikaya.ticketservice.dto.enums.UserType;
 import com.melikesivrikaya.ticketservice.exception.ExceptionMessages;
 import com.melikesivrikaya.ticketservice.exception.TicketException;
@@ -15,12 +12,14 @@ import com.melikesivrikaya.ticketservice.model.Ticket;
 import com.melikesivrikaya.ticketservice.producer.KafkaProducer;
 import com.melikesivrikaya.ticketservice.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TicketCustomerService {
 
     private final TicketRepository ticketRepository;
@@ -33,49 +32,57 @@ public class TicketCustomerService {
     private int totalPrice = 0 ;
     private final KafkaProducer kafkaProducer;
 
-    // Eğer bilet ödeme aşamasında değilse sepete ekliyor
+
     public Ticket addBasket(Long ticketId, Gender gender) {
         Ticket ticket = ticketRepository.findById(ticketId).orElse(null);
         if (ticket == null ) {
+            log.error(ExceptionMessages.TICKET_NOT_FOUNT);
             throw new TicketException(ExceptionMessages.TICKET_NOT_FOUNT);
         } else if (ticket.isReserved()) {
+            log.error(ExceptionMessages.TICKET_RESERVED);
             throw new TicketException(ExceptionMessages.TICKET_RESERVED);
         }
         if (basket.stream().anyMatch(ticket1 -> ticket1.getId().equals(ticketId))){
+            log.error(ExceptionMessages.TICKET_ADDED_BASKET);
             throw new TicketException(ExceptionMessages.TICKET_ADDED_BASKET);
         }
         ticket.setTravellerGender(gender);
         basket.add(ticket);
+        log.info(TicketConstants.ADDED_TICKET_TO_BASKET);
         return ticket;
     }
 
 
-    // Ticket lar reserve edilip tripId ye göre listeleniyor
     public List<Ticket> approvalBasket(String userType,String userId){
 
         basket.forEach(ticket -> {
             Ticket currentTicket = ticketRepository.findById(ticket.getId()).orElse(null);
             if (currentTicket == null){
+                log.error(ExceptionMessages.TICKET_NOT_FOUNT);
                 throw new TicketException(ExceptionMessages.TICKET_NOT_FOUNT);
             } else if (ticket.isReserved()) {
+                log.error(ExceptionMessages.TICKET_RESERVED);
                 throw new TicketException(ExceptionMessages.TICKET_RESERVED);
             }
             ticketList.computeIfAbsent(ticket.getTripId(), k -> new ArrayList<>()).add(currentTicket);
             ticket.setReserved(true);
         });
         ticketService.createTicketList(basket);
-        ticketRepository.saveAll(basket);
+        try {
+            ticketRepository.saveAll(basket);
+        }catch (Exception e){
+            log.error(ExceptionMessages.NO_SAVE);
+        }
+        log.info(TicketConstants.APPROVAL_BASKET);
         validateBasket(userType,userId);
         return basket;
     }
 
 
-    // Biletler için logic kontroller yapılıyor
     public void validateBasket(String userType,String userId){
 
         ticketList.forEach((k, v) -> {
 
-           // Kullanıcının bu sefer için daha önce almış olduğu bilet sayısı
            List<Ticket> ticketsByUser =  ticketRepository.findByUserIdAndTripId(Long.valueOf(userId),k).orElse(null);
 
            if (ticketsByUser != null){
@@ -84,24 +91,26 @@ public class TicketCustomerService {
                int maxTickets = 0 ;
 
                if (userType.equals(String.valueOf(UserType.CORPORATE))){
-                   maxTickets = 40;
+                   maxTickets = TicketConstants.CORPORATE_USER_MAX_TICKET;
                } else if (userType.equals(String.valueOf(UserType.INDIVIDUAL))) {
-                   maxTickets = 4;
+                   maxTickets = TicketConstants.INDIVIDUAL_USER_MAX_TICKET;
                }
                if (totalTicketCountByUser > maxTickets){
+                   log.error(ExceptionMessages.MAX_TICKET_EXCEED);
                    throw new TicketException(ExceptionMessages.MAX_TICKET_EXCEED + (maxTickets - ticketCountByUser));
                }
                v.forEach(ticket -> {
-                   if (String.valueOf(ticket.getTravellerGender()).equals("MALE")){
+                   if (String.valueOf(ticket.getTravellerGender()).equals(String.valueOf(Gender.MALE))){
                        maleTravellerCount += 1;
                    }
                });
            }
         });
-        if (userType.equals(String.valueOf(UserType.CORPORATE)) && maleTravellerCount > 2) {
+        if (userType.equals(String.valueOf(UserType.CORPORATE)) && maleTravellerCount > TicketConstants.CORPORATE_USER_MAX_MALE_TICKET) {
+            log.error(ExceptionMessages.MAX_MALE_TRAVELLER);
             throw new TicketException(ExceptionMessages.MAX_MALE_TRAVELLER);
         }
-
+        log.info(TicketConstants.VALIDATE_BASKET);
     }
 
     public void ticketsPayment(Long userId,Rate rate) {
@@ -129,9 +138,13 @@ public class TicketCustomerService {
 
             kafkaProducer.sendNotification(order);
         }
-        ticketRepository.saveAll(paymentTicket);
-        ticketList.clear();
-        basket.clear();
+        try {
+            ticketRepository.saveAll(paymentTicket);
+            ticketList.clear();
+            basket.clear();
+        }catch (Exception e){
+            log.error(ExceptionMessages.NO_SAVE);
+        }
     }
 
     public void removeBasket(Long ticketId) {
@@ -140,4 +153,9 @@ public class TicketCustomerService {
             basket.remove(ticket);
         }
     }
+
+    public List<Ticket> findAll() {
+        return ticketRepository.findAll();
+    }
+
 }

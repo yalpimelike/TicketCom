@@ -16,4 +16,17 @@ public class User {
     private String username,password,phone,email;
     private Set<Role> roles;
     private UserType userType;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                ", userType=" + userType +
+                '}';
+    }
 }

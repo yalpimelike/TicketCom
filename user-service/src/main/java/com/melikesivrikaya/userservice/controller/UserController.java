@@ -22,11 +22,6 @@ public class UserController {
         return userService.create(user);
     }
 
-    @GetMapping
-    public List<User> getAll() {
-        return userService.getAll();
-    }
-
     @GetMapping("/{username}")
     public User findByUsername(@PathVariable String username) {
         return userService.findByUsername(username);

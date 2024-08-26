@@ -4,17 +4,12 @@ import com.melikesivrikaya.authservice.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserClientService {
 
     private final UserClient userClient;
-
-    public List<User> getUsers() {
-        return userClient.getAll();
-    }
 
     public User createUser(User user) {
         return userClient.create(user);

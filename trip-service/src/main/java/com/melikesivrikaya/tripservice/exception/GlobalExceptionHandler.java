@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(TripException.class)
-    public String handleBlogHubException(TripException userException){
+    public String handleTripException(TripException userException){
         return userException.getMessage();
     }
 

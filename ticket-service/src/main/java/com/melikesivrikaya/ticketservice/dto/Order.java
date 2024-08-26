@@ -1,8 +1,6 @@
 package com.melikesivrikaya.ticketservice.dto;
 
 import com.melikesivrikaya.ticketservice.dto.enums.Rate;
-import com.melikesivrikaya.ticketservice.dto.enums.TicketForOrder;
-import com.melikesivrikaya.ticketservice.model.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

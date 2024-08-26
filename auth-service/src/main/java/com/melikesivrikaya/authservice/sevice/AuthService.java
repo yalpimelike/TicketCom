@@ -1,12 +1,12 @@
 package com.melikesivrikaya.authservice.sevice;
 
 import com.melikesivrikaya.authservice.client.user.UserClientService;
+import com.melikesivrikaya.authservice.dto.AuthConstants;
 import com.melikesivrikaya.authservice.dto.request.UserLoginRequest;
 import com.melikesivrikaya.authservice.dto.request.UserSaveRequest;
 import com.melikesivrikaya.authservice.exception.AuthException;
 import com.melikesivrikaya.authservice.exception.ExceptionMessages;
 import com.melikesivrikaya.authservice.model.User;
-import com.melikesivrikaya.authservice.model.UserDetail;
 import com.melikesivrikaya.authservice.model.enums.Role;
 import com.melikesivrikaya.authservice.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +33,7 @@ public class AuthService {
         boolean isVariableUser = userClientService.existsByUsername(request.getUsername());
 
        if (isVariableUser) {
+           log.error(ExceptionMessages.USER_CURRENT);
            throw new AuthException(ExceptionMessages.USER_CURRENT);
        }
 
@@ -45,6 +46,7 @@ public class AuthService {
                 .roles(Set.of(Role.USER))
                 .build();
 
+       log.info(AuthConstants.CREATED_USER + user.toString());
         return userClientService.createUser(user);
     }
 

@@ -1,7 +1,5 @@
 package com.melikesivrikaya.userservice.controller;
 
-import com.melikesivrikaya.userservice.converter.UserConverter;
-import com.melikesivrikaya.userservice.dto.UserResponse;
 import com.melikesivrikaya.userservice.model.User;
 import com.melikesivrikaya.userservice.model.enums.Role;
 import com.melikesivrikaya.userservice.service.UserCustomerService;

@@ -1,5 +1,7 @@
 package com.melikesivrikaya.orderservice.service;
 
+import com.melikesivrikaya.orderservice.exception.ExceptionMessages;
+import com.melikesivrikaya.orderservice.exception.OrderException;
 import com.melikesivrikaya.orderservice.model.Order;
 import com.melikesivrikaya.orderservice.model.TicketForOrder;
 import com.melikesivrikaya.orderservice.repository.OrderRepository;
@@ -19,10 +21,18 @@ public class OrderService {
         return orderRepository.findAll();
     }
     public Order save(Order order) {
-        return orderRepository.save(order);
+        try {
+            return orderRepository.save(order);
+        }catch (Exception e){
+            throw new OrderException(ExceptionMessages.NO_SAVE);
+        }
     }
 
     public List<TicketForOrder> getTicketsByTripId(Long tripId) {
-        return ticketForOrderRepository.findByTripId(tripId);
+        try {
+            return ticketForOrderRepository.findByTripId(tripId);
+        }catch (Exception e){
+            throw new OrderException(ExceptionMessages.ERROR_REPO);
+        }
     }
 }

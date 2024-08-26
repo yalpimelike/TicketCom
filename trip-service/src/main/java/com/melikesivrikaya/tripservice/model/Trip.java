@@ -48,4 +48,18 @@ public class Trip {
         }
         return localDate;
     }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "id=" + id +
+                ", startCity='" + startCity + '\'' +
+                ", endCity='" + endCity + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", price=" + price +
+                ", travelerCount=" + travelerCount +
+                ", tripType=" + tripType +
+                '}';
+    }
 }

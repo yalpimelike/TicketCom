@@ -1,4 +1,4 @@
-package com.melikesivrikaya.userservice.exception;
+package com.melikesivrikaya.gatewayservice.exception;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -7,4 +7,5 @@ import lombok.NoArgsConstructor;
 public class ExceptionMessages {
 
     public static final String USER_NOT_FOUNT = "User not found.";
+    public static final String USER_CURRENT = "There is already a user with this username.";
 }

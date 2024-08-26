@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(TicketException.class)
-    public String handleBlogHubException(TicketException ticketException){
+    public String handleTicketException(TicketException ticketException){
         return ticketException.getMessage();
     }
 
