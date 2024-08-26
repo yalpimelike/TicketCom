@@ -9,4 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface TripClient {
     @GetMapping("{tripId}")
     Trip getTripById(@PathVariable Long tripId);
+
+    @GetMapping("{tripId}/{count}")
+    void soldTicketCountSubtract(@PathVariable Long tripId,@PathVariable int count);
 }

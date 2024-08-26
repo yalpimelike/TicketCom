@@ -3,6 +3,8 @@ package com.melikesivrikaya.authservice.sevice;
 import com.melikesivrikaya.authservice.client.user.UserClientService;
 import com.melikesivrikaya.authservice.dto.request.UserLoginRequest;
 import com.melikesivrikaya.authservice.dto.request.UserSaveRequest;
+import com.melikesivrikaya.authservice.exception.AuthException;
+import com.melikesivrikaya.authservice.exception.ExceptionMessages;
 import com.melikesivrikaya.authservice.model.User;
 import com.melikesivrikaya.authservice.model.UserDetail;
 import com.melikesivrikaya.authservice.model.enums.Role;
@@ -31,7 +33,7 @@ public class AuthService {
         boolean isVariableUser = userClientService.existsByUsername(request.getUsername());
 
        if (isVariableUser) {
-           throw new RuntimeException("Bu username e ait bir kullanıcı zaten var.");
+           throw new AuthException(ExceptionMessages.USER_CURRENT);
        }
 
         User user = User.builder()

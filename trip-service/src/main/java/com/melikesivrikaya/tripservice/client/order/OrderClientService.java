@@ -13,11 +13,11 @@ public class OrderClientService {
     private final OrderClient orderClient;
     int totalPrice = 0;
 
-    public int totalBuyTicketCount(Long tripId) {
+    public int totalSoldTicketCount(Long tripId) {
         return orderClient.getTicketsByTripId(tripId).size();
     }
 
-    public int totalBuyTicketPrice(Long tripId) {
+    public int totalSoldTicketPrice(Long tripId) {
         List<TicketResponse> ticketResponses = orderClient.getTicketsByTripId(tripId);
         ticketResponses.forEach(ticketResponse -> totalPrice += ticketResponse.getPrice());
         return totalPrice;

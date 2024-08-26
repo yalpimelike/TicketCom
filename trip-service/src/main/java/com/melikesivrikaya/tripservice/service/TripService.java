@@ -24,8 +24,6 @@ public class TripService {
     private final KafkaProducer kafkaProducer;
     private final TicketClientService ticketClientService;
 
-    // TODO traveller count propertiesten al
-
     public Trip create(Trip trip,String userId) {
         if (trip.getTripType().equals(TripType.PLANE)){
             trip.setTravelerCount(189);
@@ -52,5 +50,11 @@ public class TripService {
 
     public Trip getAllBuyTickets(Long tripId) {
         return null;
+    }
+
+    public void soldTicketCountSubtract(Long tripId, int count) {
+        Trip trip = getTripById(tripId);
+        trip.setTravelerCount(trip.getTravelerCount() - count);
+        tripRepository.save(trip);
     }
 }

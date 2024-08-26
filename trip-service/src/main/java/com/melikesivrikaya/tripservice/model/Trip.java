@@ -1,5 +1,7 @@
 package com.melikesivrikaya.tripservice.model;
 
+import com.melikesivrikaya.tripservice.exception.ExceptionMessages;
+import com.melikesivrikaya.tripservice.exception.TripException;
 import com.melikesivrikaya.tripservice.model.enums.TripType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,12 +39,12 @@ public class Trip {
         this.endDate = dateParse(endDate);
     }
 
-    // TODO buradan çıkan hatayı yakala
+
     public LocalDate dateParse(String date) {
         LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         LocalDate localDateNow = LocalDate.now();
         if (localDate.isBefore(localDateNow)){
-            throw new RuntimeException("Date is not in the past");
+            throw new TripException(ExceptionMessages.INVALID_DATE);
         }
         return localDate;
     }

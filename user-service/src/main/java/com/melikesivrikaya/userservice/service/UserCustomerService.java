@@ -1,8 +1,11 @@
 package com.melikesivrikaya.userservice.service;
 
+import com.melikesivrikaya.userservice.exception.ExceptionMessages;
+import com.melikesivrikaya.userservice.exception.UserException;
 import com.melikesivrikaya.userservice.model.User;
 import com.melikesivrikaya.userservice.model.enums.Role;
 import com.melikesivrikaya.userservice.repository.UserRepository;
+import jakarta.security.auth.message.AuthException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +24,7 @@ public class UserCustomerService {
 
         User user = userRepository.findById(userId).orElse(null);
         if(user == null) {
-            throw new RuntimeException("User not found");
+            throw new UserException(ExceptionMessages.USER_NOT_FOUNT);
         }else {
             user.getRoles().add(role);
             userRepository.save(user);
@@ -32,7 +35,7 @@ public class UserCustomerService {
     public User deleteRole(Long userId, Role role) {
         User user = userRepository.findById(userId).orElse(null);
         if(user == null) {
-            throw new RuntimeException("User not found");
+            throw new UserException(ExceptionMessages.USER_NOT_FOUNT);
         }else {
             user.getRoles().remove(role);
             userRepository.save(user);

@@ -15,4 +15,7 @@ public class TripClientService {
     public Trip getTripById(Long tripId) {
         return tripClient.getTripById(tripId);
     }
+    public void soldTicketCountSubtract(Long tripId,int count){
+        tripClient.soldTicketCountSubtract(tripId,count);
+    }
 }

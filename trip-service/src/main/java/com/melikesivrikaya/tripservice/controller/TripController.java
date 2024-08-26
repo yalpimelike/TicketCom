@@ -27,6 +27,10 @@ public class TripController {
         return tripService.getAll();
     }
 
+    @GetMapping("{tripId}/{count}")
+    public void soldTicketCountSubtract(@PathVariable Long tripId,@PathVariable int count){
+        tripService.soldTicketCountSubtract(tripId,count);
+    }
     @GetMapping("{tripId}")
     public Trip getTripById(@PathVariable Long tripId) {
         return tripService.getTripById(tripId);
@@ -36,7 +40,6 @@ public class TripController {
     public Trip getAllBuyTickets(@PathVariable Long tripId) {
         return tripService.getAllBuyTickets(tripId);
     }
-
 
     @DeleteMapping("{tripId}")
     public void delete(@PathVariable Long tripId) {

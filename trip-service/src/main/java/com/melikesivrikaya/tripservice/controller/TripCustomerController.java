@@ -25,12 +25,12 @@ public class TripCustomerController {
     }
 
     @GetMapping("/count/{tripId}")
-    public int totalBuyTicketCount(@PathVariable Long tripId) {
-        return orderClientService.totalBuyTicketCount(tripId);
+    public int totalSoldTicketCount(@PathVariable Long tripId) {
+        return orderClientService.totalSoldTicketCount(tripId);
     }
 
     @GetMapping("/price/{tripId}")
-    public int totalBuyTicketPrice(@PathVariable Long tripId) {
-        return orderClientService.totalBuyTicketPrice(tripId);
+    public int totalSoldTicketPrice(@PathVariable Long tripId) {
+        return orderClientService.totalSoldTicketPrice(tripId);
     }
 }

@@ -30,5 +30,6 @@ public class Ticket implements Serializable {
         this.number = number;
         this.reserved = reserved;
         this.isPayment = isPayment;
+        this.price = price;
     }
 }
