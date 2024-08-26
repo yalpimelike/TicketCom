@@ -27,16 +27,6 @@ public class UserController {
         return userService.getAll();
     }
 
-    @GetMapping("/{userId}/{role}")
-    public User addRole(@PathVariable Long userId,@PathVariable Role role) {
-        return userService.addRole(userId,role);
-    }
-
-    @DeleteMapping("/{userId}/{role}")
-    public User deleteRole(@PathVariable Long userId,@PathVariable Role role) {
-        return userService.deleteRole(userId,role);
-    }
-
     @GetMapping("/{username}")
     public User findByUsername(@PathVariable String username) {
         return userService.findByUsername(username);

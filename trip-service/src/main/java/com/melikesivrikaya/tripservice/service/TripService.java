@@ -1,10 +1,13 @@
 package com.melikesivrikaya.tripservice.service;
 
-import com.melikesivrikaya.tripservice.client.TicketClientService;
+import com.melikesivrikaya.tripservice.client.ticket.TicketClientService;
 import com.melikesivrikaya.tripservice.dto.CreateTicketListRequest;
 import com.melikesivrikaya.tripservice.model.Trip;
 import com.melikesivrikaya.tripservice.model.enums.TripType;
 import com.melikesivrikaya.tripservice.producer.KafkaProducer;
+import com.melikesivrikaya.tripservice.producer.constants.NotificationConstants;
+import com.melikesivrikaya.tripservice.producer.dto.NotificationRequest;
+import com.melikesivrikaya.tripservice.producer.enums.NotificationType;
 import com.melikesivrikaya.tripservice.repository.TripRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +26,7 @@ public class TripService {
 
     // TODO traveller count propertiesten al
 
-    public Trip create(Trip trip) {
+    public Trip create(Trip trip,String userId) {
         if (trip.getTripType().equals(TripType.PLANE)){
             trip.setTravelerCount(189);
         } else if (trip.getTripType().equals(TripType.BUS)) {
@@ -31,7 +34,7 @@ public class TripService {
         }
         Trip savedTrip =  tripRepository.save(trip);
         ticketClientService.createTickets(new CreateTicketListRequest(trip.getId(),trip.getTravelerCount(),trip.getPrice()));
-        kafkaProducer.sendTrip(savedTrip);
+        kafkaProducer.sendNotification(new NotificationRequest(Long.valueOf(userId), NotificationType.EMAIL, NotificationConstants.SEND_EMAIL_TOPIC,trip.toString()));
         return savedTrip;
     }
 

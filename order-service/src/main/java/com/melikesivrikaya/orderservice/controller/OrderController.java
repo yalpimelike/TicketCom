@@ -1,12 +1,11 @@
 package com.melikesivrikaya.orderservice.controller;
 
+import com.melikesivrikaya.orderservice.converter.TicketConverter;
+import com.melikesivrikaya.orderservice.dto.TicketResponse;
 import com.melikesivrikaya.orderservice.model.Order;
 import com.melikesivrikaya.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,5 +17,10 @@ public class OrderController {
     @GetMapping
     public List<Order> getOrders() {
         return orderService.findAll();
+    }
+
+    @GetMapping("/{tripId}")
+    public List<TicketResponse> getTicketsByTripId(@PathVariable Long tripId) {
+        return orderService.getTicketsByTripId(tripId).stream().map(TicketConverter::toTicketResponse).toList();
     }
 }

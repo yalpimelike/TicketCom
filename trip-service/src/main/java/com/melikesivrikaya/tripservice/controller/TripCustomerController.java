@@ -1,7 +1,7 @@
 package com.melikesivrikaya.tripservice.controller;
 
+import com.melikesivrikaya.tripservice.client.order.OrderClientService;
 import com.melikesivrikaya.tripservice.model.Trip;
-import com.melikesivrikaya.tripservice.service.TripCustomerService;
 import com.melikesivrikaya.tripservice.service.TripService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/trips/customer")
 public class TripCustomerController {
 
-    private final TripCustomerService tripCustomerService;
+    private final OrderClientService orderClientService;
     private final TripService tripService;
 
     @PostMapping
-    public Trip create(@RequestBody Trip trip) {
-        return tripService.create(trip);
+    public Trip create(@RequestBody Trip trip,@RequestHeader("userId") String userId) {
+        return tripService.create(trip,userId);
     }
 
     @DeleteMapping("{tripId}")
@@ -26,11 +26,11 @@ public class TripCustomerController {
 
     @GetMapping("/count/{tripId}")
     public int totalBuyTicketCount(@PathVariable Long tripId) {
-        return 0;
+        return orderClientService.totalBuyTicketCount(tripId);
     }
 
     @GetMapping("/price/{tripId}")
     public int totalBuyTicketPrice(@PathVariable Long tripId) {
-        return 0;
+        return orderClientService.totalBuyTicketPrice(tripId);
     }
 }

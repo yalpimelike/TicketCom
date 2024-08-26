@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -28,30 +29,30 @@ public class JwtUtil {
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 60 * 100))
-                .signWith( SignatureAlgorithm.HS256,get_SHA_512_Password(user.getPassword(),user.getUsername())).compact();
+                .signWith(getSignKey() ,SignatureAlgorithm.HS256).compact();
     }
 
-//    private Key getSignKey() {
-//        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
-//        return Keys.hmacShaKeyFor(keyBytes);
+    private Key getSignKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+//    public String get_SHA_512_Password(String passwordToHash, String username){
+//        String generatedPassword = null;
+//        try {
+//            MessageDigest md = MessageDigest.getInstance("SHA-512");
+//            md.update(username.getBytes(StandardCharsets.UTF_8));
+//            byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+//            StringBuilder sb = new StringBuilder();
+//            for(int i=0; i< bytes.length ;i++){
+//                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+//            }
+//            generatedPassword = sb.toString();
+//
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
+//        return generatedPassword;
 //    }
-
-    public String get_SHA_512_Password(String passwordToHash, String username){
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(username.getBytes(StandardCharsets.UTF_8));
-            byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++){
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            generatedPassword = sb.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return generatedPassword;
-    }
 
 }

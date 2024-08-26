@@ -18,8 +18,8 @@ public class TripController {
     private final TripService tripService;
 
     @PostMapping
-    public Trip create(@RequestBody Trip trip) {
-        return tripService.create(trip);
+    public Trip create(@RequestBody Trip trip,@RequestHeader("userId") String userId) {
+        return tripService.create(trip,userId);
     }
 
     @GetMapping

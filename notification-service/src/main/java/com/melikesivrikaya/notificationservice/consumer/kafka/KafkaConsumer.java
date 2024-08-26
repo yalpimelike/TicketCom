@@ -1,7 +1,8 @@
 package com.melikesivrikaya.notificationservice.consumer.kafka;
 
-import com.melikesivrikaya.notificationservice.consumer.kafka.constants.KafkaTopicConstants;
-import jakarta.persistence.criteria.Order;
+import com.melikesivrikaya.notificationservice.consumer.constants.NotificationConstants;
+import com.melikesivrikaya.notificationservice.dto.NotificationRequest;
+import com.melikesivrikaya.notificationservice.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -11,12 +12,18 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 public class KafkaConsumer {
-    @KafkaListener(topics = KafkaTopicConstants.SEND_EMAIL_TOPIC, groupId = "${kafka.group-id}")
-    public void listenEmail(Order order) {
-        log.info("Received Messasge: {}", order.toString());
+
+    private final NotificationService notificationService;
+
+    @KafkaListener(topics = NotificationConstants.SEND_EMAIL_TOPIC, groupId = "${kafka.group-id}")
+    public void listenEmail(NotificationRequest request) {
+        log.info("Received Messasge: {}", request.getObject().toString());
+        notificationService.sendNotification(request);
     }
-    @KafkaListener(topics = KafkaTopicConstants.SEND_SMS_TOPIC, groupId = "${kafka.group-id}")
-    public void listenSms(Order order) {
-        log.info("Received Messasge: {}", order.toString());
+
+    @KafkaListener(topics = NotificationConstants.SEND_SMS_TOPIC, groupId = "${kafka.group-id}")
+    public void listenSms(NotificationRequest request) {
+        log.info("Received Messasge: {}", request.getObject().toString());
+        notificationService.sendNotification(request);
     }
 }

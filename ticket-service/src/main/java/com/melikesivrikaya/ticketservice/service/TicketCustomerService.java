@@ -117,9 +117,7 @@ public class TicketCustomerService {
             order.setUserId(userId);
             order.setTotalPrice(totalPrice);
 
-            kafkaProducer.sendOrder(order);
-            kafkaProducer.sendEmail(order);
-            kafkaProducer.senSms(order);
+            kafkaProducer.sendNotification(order);
             // herşey tamamsa ticket databse inde ticketlar ödendi olarak gözüksün YAPILDI
             // birde ticketler filtrelenerek gelsin buna bir çözüm bul redis olabilir elasticsearch ve solr
         }

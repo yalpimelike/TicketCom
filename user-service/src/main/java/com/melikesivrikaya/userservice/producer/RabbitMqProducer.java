@@ -1,7 +1,7 @@
 package com.melikesivrikaya.userservice.producer;
 
 import com.melikesivrikaya.userservice.config.RabbitMqConfig;
-import com.melikesivrikaya.userservice.dto.SendEmailMessage;
+import com.melikesivrikaya.userservice.dto.NotificationRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -16,11 +16,10 @@ public class RabbitMqProducer {
 
     private final RabbitMqConfig rabbitMQConfig;
 
-    public void sendEmail(SendEmailMessage sendEmailMessage) {
-        rabbitTemplate.convertAndSend(rabbitMQConfig.getExchange(), rabbitMQConfig.getRoutingkey(), sendEmailMessage);
+    public void sendNotification(NotificationRequest message) {
+        rabbitTemplate.convertAndSend(rabbitMQConfig.getExchange(), rabbitMQConfig.getRoutingkey(), message);
 
-        log.info("Message kuyruğa gönderildi. kuyruk:{}, message: {}", rabbitMQConfig.getQueueName(), sendEmailMessage);
-
+        log.info("Message kuyruğa gönderildi. kuyruk:{}, message: {}", rabbitMQConfig.getQueueName(), message);
     }
 
 }

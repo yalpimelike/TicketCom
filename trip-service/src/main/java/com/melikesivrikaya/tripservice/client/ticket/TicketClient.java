@@ -1,4 +1,4 @@
-package com.melikesivrikaya.tripservice.client;
+package com.melikesivrikaya.tripservice.client.ticket;
 
 import com.melikesivrikaya.tripservice.dto.CreateTicketListRequest;
 import org.springframework.cloud.openfeign.FeignClient;

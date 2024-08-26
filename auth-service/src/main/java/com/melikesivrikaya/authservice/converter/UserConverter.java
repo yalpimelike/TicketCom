@@ -10,7 +10,7 @@ public class UserConverter {
         return UserResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .email(user.getEmail())
+                .phone(user.getPhone())
                 .build();
     }
 }
