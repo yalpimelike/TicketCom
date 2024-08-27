@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class PaymentRequest {
-    private Long tripId,userId;
+    private Long userId;
     private Rate rate;
     private int totalPrice;
 }

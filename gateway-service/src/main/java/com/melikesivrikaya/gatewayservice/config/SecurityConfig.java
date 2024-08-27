@@ -30,8 +30,6 @@ public class SecurityConfig {
                         .permitAll()
                         .pathMatchers("/api/v1/trips/customer/**")
                         .hasRole("ADMIN")
-                        .pathMatchers("/api/v1/notification-template/**")
-                        .hasRole("ADMIN")
                         .pathMatchers("/api/v1/tickets/customer/**")
                         .hasRole("USER")
                         .pathMatchers("/api/v1/users/customer/**")

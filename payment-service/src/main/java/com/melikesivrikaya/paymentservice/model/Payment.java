@@ -23,5 +23,5 @@ public class Payment {
 
     private int totalPrice;
 
-    private Long tripId,userId;
+    private Long userId;
 }

@@ -9,7 +9,6 @@ public class PaymentConverter {
                 .rate(paymentRequest.getRate())
                 .totalPrice(paymentRequest.getTotalPrice())
                 .userId(paymentRequest.getUserId())
-                .tripId(paymentRequest.getTripId())
                 .build();
     }
 }
