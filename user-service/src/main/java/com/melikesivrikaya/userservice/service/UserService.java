@@ -34,12 +34,8 @@ public class UserService {
         throw new UserException(ExceptionMessages.USER_NOT_FOUNT);
     }
 
+    // Bu metodun kontrolü auth service de yapılıyor
     public User findByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElse(null);
-        if (user != null) {
-            return user;
-        }
-        log.error(ExceptionMessages.USER_NOT_FOUNT);
-        throw new UserException(ExceptionMessages.USER_NOT_FOUNT);
+        return userRepository.findByUsername(username).orElse(null);
     }
 }

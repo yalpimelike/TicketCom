@@ -58,7 +58,7 @@ public class JwtRequestFilter implements WebFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = userClientService.userByUsername(username);
             if (user != null){
-                UserDetail userDetail = new UserDetail();
+                UserDetail userDetail = new UserDetail(user);
                 if (jwtUtil.validateToken(jwtToken, userDetail)) {
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());

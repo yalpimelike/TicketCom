@@ -16,9 +16,9 @@ public class KafkaConsumer {
     private final OrderService orderService;
 
     @KafkaListener(topics = KafkaTopicConstants.ORDER_SAVE_TOPIC, groupId = "${kafka.group-id}")
-    public void listen(Order trip) {
-        log.info("Received Messasge: {}", trip);
-        orderService.save(trip);
+    public void listen(Order order) {
+        log.info("Received Messasge: {}", order);
+        orderService.save(order);
     }
 
 }
